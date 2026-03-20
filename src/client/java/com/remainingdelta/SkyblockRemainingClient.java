@@ -1,5 +1,8 @@
 package com.remainingdelta;
 
+import com.remainingdelta.config.ModConfig;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
@@ -17,9 +20,10 @@ public class SkyblockRemainingClient implements ClientModInitializer {
    */
   @Override
   public void onInitializeClient() {
+    AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
+
     HudRenderCallback.EVENT.register((guiGraphics, renderTickCounter) -> {
       Minecraft client = Minecraft.getInstance();
-
       if (client.player != null && !client.options.hideGui) {
         int x = (int) client.player.getX();
         int y = (int) client.player.getY();

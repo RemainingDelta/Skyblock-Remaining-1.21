@@ -1,11 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "skyblockremaining",
-	"version": "${version}",
+    "version": "${version}",
 	"name": "SkyblockRemaining",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A client-side Skyblock utility mod providing quality-of-life HUD overlays for Hypixel Skyblock.",
 	"authors": [
-		"Me!"
+		"RemainingDelta"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -14,14 +14,17 @@
 	"license": "CC0-1.0",
 	"icon": "assets/skyblockremaining/icon.png",
 	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"com.remainingdelta.SkyblockRemaining"
-		],
-		"client": [
-			"com.remainingdelta.SkyblockRemainingClient"
-		]
-	},
+    "entrypoints": {
+      "main": [
+        "com.remainingdelta.SkyblockRemaining"
+      ],
+      "client": [
+        "com.remainingdelta.SkyblockRemainingClient"
+      ],
+      "modmenu": [
+        "com.remainingdelta.ModMenuIntegration"
+      ]
+    },
 	"mixins": [
 		"skyblockremaining.mixins.json",
 		{
