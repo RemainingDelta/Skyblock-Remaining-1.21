@@ -1,5 +1,6 @@
 package com.remainingdelta.gui;
 
+import com.remainingdelta.config.ConfigManager;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -48,8 +49,9 @@ public class ConfigScreen extends Screen {
   }
 
   /**
-   * Initializes the screen by calculating the centered position and
-   * registering transparent click widgets over each category entry.
+   * Initializes the screen by calculating the centered position,
+   * registering transparent click widgets over each category entry,
+   * and registering the General page interactive widgets.
    */
   @Override
   protected void init() {
@@ -65,24 +67,54 @@ public class ConfigScreen extends Screen {
       int cy = lbY + 6 + i * 18;
       net.minecraft.client.gui.components.Button btn =
           net.minecraft.client.gui.components.Button.builder(
-              Component.literal(""),
-              b -> selectedCategory = index
-          )
-          .bounds(lbX, cy - 2, lbW, 12)
-          .build();
+                  Component.literal(""),
+                  b -> selectedCategory = index
+              )
+              .bounds(lbX, cy - 2, lbW, 12)
+              .build();
       btn.setAlpha(0f);
       this.addRenderableWidget(btn);
     }
+
+    int cbX = startX + PANEL_WIDTH + 1 + INNER_PADDING;
+    int cbY = startY + HEADER_HEIGHT + 1 + INNER_PADDING;
+    int cbW = SCREEN_WIDTH - PANEL_WIDTH - 1 - INNER_PADDING * 2;
+
+    int by = cbY + 26;
+    int ty = cbY + 48;
+    int toggleX = cbX + cbW - 36;
+    net.minecraft.client.gui.components.Button toggleBtn =
+        net.minecraft.client.gui.components.Button.builder(
+                Component.literal(""),
+                b -> {
+                  ConfigManager.get().hudEnabled = !ConfigManager.get().hudEnabled;
+                  ConfigManager.save();
+                }
+            )
+            .bounds(toggleX, ty - 1, 28, 10)
+            .build();
+    toggleBtn.setAlpha(0f);
+    this.addRenderableWidget(toggleBtn);
+
+    net.minecraft.client.gui.components.Button hudPosBtn =
+        net.minecraft.client.gui.components.Button.builder(
+                Component.literal("Edit HUD Positions"),
+                b -> minecraft.setScreen(new HudEditorScreen())
+            )
+            .bounds(cbX + cbW - 80, by - 2, 75, 12)
+            .build();
+    hudPosBtn.setAlpha(0f);
+    this.addRenderableWidget(hudPosBtn);
   }
 
   /**
    * Renders the full config screen including the header, left category panel,
    * right content panel, and category-specific content.
    *
-   * @param g       the graphics context
-   * @param mouseX  the current mouse X position
-   * @param mouseY  the current mouse Y position
-   * @param delta   the render tick delta
+   * @param g      the graphics context
+   * @param mouseX the current mouse X position
+   * @param mouseY the current mouse Y position
+   * @param delta  the render tick delta
    */
   @Override
   public void render(GuiGraphics g, int mouseX, int mouseY, float delta) {
@@ -99,8 +131,7 @@ public class ConfigScreen extends Screen {
     g.fill(x, y, x + w, y + HEADER_HEIGHT, HEADER_BG);
     g.fill(x, y + HEADER_HEIGHT, x + w, y + HEADER_HEIGHT + 1, BORDER);
     int titleW = font.width("SkyblockRemaining");
-    g.drawString(font, "SkyblockRemaining", x + (w - titleW) / 2, y + 6, TEXT,
-        false);
+    g.drawString(font, "SkyblockRemaining", x + (w - titleW) / 2, y + 6, TEXT, false);
 
     int bodyY = y + HEADER_HEIGHT + 1;
     int bodyH = h - HEADER_HEIGHT - 1;
@@ -159,7 +190,23 @@ public class ConfigScreen extends Screen {
         ay += 10;
       }
     } else {
-      g.drawString(font, "No settings yet.", cbX + 8, cbY + 26, SUBTEXT, false);
+      int by = cbY + 26;
+      int ty = cbY + 48;
+      boolean enabled = ConfigManager.get().hudEnabled;
+      g.drawString(font, "Show Coordinates HUD", cbX + 8, ty, TEXT, false);
+      int toggleX = cbX + cbW - 36;
+      g.fill(toggleX, ty - 1, toggleX + 28, ty + 9, enabled ? 0xFF2D7D46 : 0xFF555555);
+      g.fill(enabled ? toggleX + 16 : toggleX + 2, ty, enabled ? toggleX + 26 : toggleX + 12,
+          ty + 8, 0xFFFFFFFF);
+      g.drawString(font, enabled ? "ON" : "OFF", enabled ? toggleX + 3 : toggleX + 13, ty,
+          0xFFFFFFFF, false);
+
+      g.drawString(font, "Edit HUD Positions", cbX + 8, by, TEXT, false);
+      int btnX = cbX + cbW - 80;
+      g.fill(btnX, by - 2, btnX + 75, by + 10, BORDER);
+      g.fill(btnX + 1, by - 1, btnX + 74, by + 9, 0xFF2A2A2A);
+      int editW = font.width("Edit");
+      g.drawString(font, "Edit", btnX + (75 - editW) / 2, by, SUBTEXT, false);
     }
 
     super.render(g, mouseX, mouseY, delta);

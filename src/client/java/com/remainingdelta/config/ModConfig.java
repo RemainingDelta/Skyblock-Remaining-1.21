@@ -18,4 +18,18 @@ public class ModConfig implements ConfigData {
    */
   @Comment("Whether the HUD is enabled")
   public boolean hudEnabled = true;
+
+  /**
+   * The X position of the HUD overlay on screen.
+   * Defaults to 5.
+   */
+  @Comment("HUD X position")
+  public int hudX = 5;
+
+  /**
+   * The Y position of the HUD overlay on screen.
+   * Defaults to 5.
+   */
+  @Comment("HUD Y position")
+  public int hudY = 5;
 }
