@@ -43,8 +43,8 @@ dependencies {
 	clientImplementation sourceSets.main.output
 
     modImplementation "com.terraformersmc:modmenu:16.0.0"
-    modImplementation "me.shedaniel.cloth:cloth-config-fabric:15.0.140"
-    include "me.shedaniel.cloth:cloth-config-fabric:15.0.140"
+    modImplementation "me.shedaniel.cloth:cloth-config-fabric:20.0.149"
+    include "me.shedaniel.cloth:cloth-config-fabric:20.0.149"
 }
 
 processResources {
