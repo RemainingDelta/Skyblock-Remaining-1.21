@@ -5,7 +5,6 @@ out/
 .nb-gradle/
 
 run/
-gradle.properties
 !gradle-wrapper.properties
 
 .idea/
