@@ -10,3 +10,6 @@ A client-side Fabric mod for Minecraft 1.21.10 providing quality-of-life HUD ove
 - Minecraft 1.21.10
 - Fabric Loader
 - Fabric API
+
+## License
+MIT
